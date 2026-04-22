@@ -1,5 +1,6 @@
 #include <cctype>
 #include <iostream>
+#include <limits>
 #include <string>
 
 using namespace std;
@@ -25,14 +26,12 @@ char shift_char(char c, int shift) {
 string caesar_encrypt(const string &plaintext, int shift) {
     string ciphertext;
     for (char c : plaintext) {
-        // TODO(student): Q1 + Q2
         ciphertext += shift_char(c, shift);
     }
     return ciphertext;
 }
 
 string caesar_decrypt(const string &ciphertext, int shift) {
-    // TODO(student): Q3
     return caesar_encrypt(ciphertext, -shift);
 }
 
@@ -41,8 +40,11 @@ int main() {
     cout << "1. Encrypt\n2. Decrypt\nChoose: ";
 
     int choice;
-    cin >> choice;
-    cin.ignore();
+    if (!(cin >> choice)) {
+        cout << "Invalid choice input.\n";
+        return 0;
+    }
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     string message;
     int shift;
@@ -50,7 +52,10 @@ int main() {
     cout << "Enter message: ";
     getline(cin, message);
     cout << "Enter key: ";
-    cin >> shift;
+    if (!(cin >> shift)) {
+        cout << "Invalid key input.\n";
+        return 0;
+    }
 
     if (!is_valid_message(message)) {
         cout << "Invalid input. Only letters and spaces are allowed.\n";
